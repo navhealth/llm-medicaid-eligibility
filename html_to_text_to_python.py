@@ -13,7 +13,7 @@ Below is HTML from a Webpage by the Washington state Health Care Authority descr
 Accurately and precisely extract all of the eligibility rules from the HTML as text. Include all relevant information, such as income charts. 
 
 {soup.body.main if soup.body.find("main") else soup.body}"""
-    return llm.predict(prompt_html_to_text)
+    return llm.invoke(prompt_html_to_text).content
 
 
 def rules_to_python(rules, llm=None):
@@ -25,7 +25,7 @@ def rules_to_python(rules, llm=None):
 Using these eligibility rules, write a Python program that prompts the user for questions, and based on their answers, determines whether they are eligible for Apple Health for Adults (age 19 through 64 years of age).
 
 {rules}"""
-    return llm.predict(prompt_text_to_python)
+    return llm.invoke(prompt_text_to_python).content
 
 
 def url_to_python(url, llm=None):

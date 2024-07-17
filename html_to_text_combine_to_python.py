@@ -20,15 +20,35 @@ if __name__ == "__main__":
 
     rules_joined = "\n\n".join(url_to_rules(url, llm=llm) for url in category_urls)
 
-    from langchain.prompts import PromptTemplate
-    from langchain.chains import ConversationChain
+    from langchain_core.chat_history import (
+        BaseChatMessageHistory,
+        InMemoryChatMessageHistory,
+    )
+    from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+    from langchain_core.runnables.history import RunnableWithMessageHistory
 
-    conversational_llm_prompt = "The following is a conversation between a human and an AI. The AI is an expert on Medicaid eligibility and is able to write quality Python code. If the AI does not know the answer to a question, it truthfully says it does not know.\n\nCurrent conversation:\n{history}\nHuman: {input}\nAI:"
-    conversational_llm = ConversationChain(
-        llm=llm,
-        prompt=PromptTemplate(
-            input_variables=["history", "input"], template=conversational_llm_prompt
-        ),
+    store = {}
+
+    def get_session_history(session_id: str) -> BaseChatMessageHistory:
+        if session_id not in store:
+            store[session_id] = InMemoryChatMessageHistory()
+        return store[session_id]
+
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "The following is a conversation between a human and an AI. The AI is an expert on Medicaid eligibility and is able to write quality Python code. If the AI does not know the answer to a question, it truthfully says it does not know.",
+            ),
+            MessagesPlaceholder(variable_name="history"),
+            ("human", "{input}"),
+        ]
+    )
+    chain_with_history = RunnableWithMessageHistory(
+        prompt | llm,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="history",
     )
 
     prompts = [
@@ -39,8 +59,8 @@ if __name__ == "__main__":
     ]
 
     for prompt in prompts:
-        output = conversational_llm({"input": prompt})["response"]
-        print(conversational_llm.memory.chat_memory.messages[-2].content)
-        print("=====================================================")
-        print(output)
-        print("=====================================================")
+        output = chain_with_history.invoke(
+            {"input": prompt}, config={"configurable": {"session_id": "session"}}
+        )
+        chain_with_history.get_session_history("session").messages[-2].pretty_print()
+        output.pretty_print()

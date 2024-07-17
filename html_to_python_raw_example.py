@@ -181,7 +181,7 @@ Below is HTML from a Webpage by the Washington state Health Care Authority descr
 From the HTML, extract the eligibility rules (be as precise and detailed as possible). Then, write a Python program that asks the user questions and based on their answers, determines whether they are eligible for Medicaid: 
 
 {soup.body.main if soup.body.find("main") else soup.body}"""
-    return llm.predict(prompt_html_to_python)
+    return llm.invoke(prompt_html_to_python).content
 
 
 if __name__ == "__main__":

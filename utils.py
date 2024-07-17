@@ -3,14 +3,22 @@ def create_llm():
 
     load_dotenv()
 
-    from langchain.chat_models import AzureChatOpenAI
+    from langchain_openai import AzureChatOpenAI
 
     llm = AzureChatOpenAI(
-        openai_api_version="2023-05-15",
+        openai_api_version="2024-06-01",
         deployment_name="gpt-35-turbo",
-        model_name="gpt-3.5-turbo",
-        model_version="0301",
-        temperature=1,
+
+        # model_name="gpt-3.5-turbo",
+        # model_version="0125",
+
+        # model_name="gpt-4",
+        # model_version="turbo-2024-04-09",
+
+        model_name="gpt-4o",
+        model_version="2024-05-13",
+
+        temperature=1.0,
         model_kwargs={"top_p": 0.5},
     )
 
