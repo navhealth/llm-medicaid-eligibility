@@ -1,5 +1,5 @@
 if __name__ == "__main__":
-    from utils import create_llm
+    from llm_medicaid_eligibility.core.utils import create_llm
 
     llm = create_llm()
 
@@ -16,10 +16,17 @@ if __name__ == "__main__":
         # "https://www.hca.wa.gov/free-or-low-cost-health-care/i-need-medical-dental-or-vision-care/medicare-savings-program",
     ]
 
-    from html_to_text_to_python import url_to_python
+    from llm_medicaid_eligibility.core.html_to_python_clean_example import url_to_python
+    from llm_medicaid_eligibility.wa.html_extractor import html_extractor
 
     python_snippets_joined = "\n\n".join(
-        url_to_python(url, llm=llm) for url in category_urls
+        url_to_python(
+            state="Washington state Health Care Authority",
+            url=url,
+            llm=llm,
+            html_extractor=html_extractor,
+        )
+        for url in category_urls
     )
 
     from langchain_core.chat_history import (

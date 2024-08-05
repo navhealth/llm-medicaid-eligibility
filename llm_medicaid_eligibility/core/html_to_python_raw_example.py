@@ -1,16 +1,14 @@
-from utils import create_llm, url_to_html
+from llm_medicaid_eligibility.core.utils import create_llm, url_to_html
 
 
-def url_to_python(url, llm=None):
+def url_to_python(state, url, llm=None, html_extractor=lambda soup: soup.body):
     if llm is None:
         llm = create_llm()
 
     soup = url_to_html(url)
 
     prompt_html_to_python = f"""
-Below is HTML from a Webpage by the Washington state Health Care Authority describing state Medicaid eligibility rules. 
-
-From the HTML, extract the eligibility rules (be as precise and detailed as possible). Then, write a Python program that asks the user questions and based on their answers, determines whether they are eligible for Medicaid: 
+Below is HTML from a webpage by the Washington state Health Care Authority describing state Medicaid eligibility rules. 
 
 <div property="content:encoded" class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item"><h2><a id="program-requirements" name="program-requirements"></a>Program requirements</h2>
 <p>You may be eligible for Apple Health for Pregnant individuals coverage if you:</p>
@@ -102,6 +100,8 @@ From the HTML, extract the eligibility rules (be as precise and detailed as poss
 </div>
 </div>
 
+From the HTML, extract the eligibility rules (be as precise and detailed as possible). Then, write a Python program that asks the user questions and based on their answers, determines whether they are eligible for Medicaid under the Washington state Health Care Authority. The program should implement eligibility calculation for all Medicaid programs provided as input, and the program should output which specific Medicaid program the user is eligible for. 
+
 Program requirements
 You may be eligible for Apple Health for Pregnant individuals coverage if you:
 - Are pregnant.
@@ -175,18 +175,12 @@ if pregnant.lower() == "y":
 else:
     print("Sorry, you are not eligible for Apple Health for Pregnant Individuals.")
 
+================================
+Below is HTML from a webpage by the {state} describing state Medicaid eligibility rules: 
 
-Below is HTML from a Webpage by the Washington state Health Care Authority describing state Medicaid eligibility rules. 
+{html_extractor(soup)}
 
-From the HTML, extract the eligibility rules (be as precise and detailed as possible). Then, write a Python program that asks the user questions and based on their answers, determines whether they are eligible for Medicaid: 
+From the HTML, extract the eligibility rules (be as precise and detailed as possible). Then, write a Python program that asks the user questions and based on their answers, determines whether they are eligible for Medicaid under the {state}. The program should implement eligibility calculation for all Medicaid programs provided as input, and the program should output which specific Medicaid program the user is eligible for. 
 
-{soup.body.main if soup.body.find("main") else soup.body}"""
+"""
     return llm.invoke(prompt_html_to_python).content
-
-
-if __name__ == "__main__":
-    print(
-        url_to_python(
-            "https://www.hca.wa.gov/free-or-low-cost-health-care/i-need-medical-dental-or-vision-care/individual-adults"
-        )
-    )

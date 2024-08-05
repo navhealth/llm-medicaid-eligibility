@@ -3,21 +3,21 @@ Using large language models to create user-friendly applications for Medicaid el
 
 ## Getting Started
 
-This project was developed with Python 3.11.9. 
+This project was developed with Python 3.12.4. 
 
 ```sh
 git clone git@github.com:navhealth/llm-medicaid-eligibility.git
 cd llm-medicaid-eligibility
 python3 -m venv venv
 source venv/bin/activate
-python3 -m pip install --upgrade pip wheel setuptools
 python3 -m pip install -r requirements.txt
 cat > .env <<EOF
-AZURE_OPENAI_ENDPOINT=https://carejourney.openai.azure.com
-AZURE_OPENAI_API_KEY=alphanumeric0api0key
-OPENAI_API_VERSION=2024-06-01
+OPENAI_API_KEY=sk-proj-1234567890abcdefghijklmnopqrstuvwxABCDEFGHIJKLMN
 EOF
-python3 html_to_text_to_python_combine.py # or html_to_text_combine_to_python.py
+python3 -m llm_medicaid_eligibility.nd.html_to_text_to_python
+python3 -m llm_medicaid_eligibility.sc.html_to_text_to_python
+python3 -m llm_medicaid_eligibility.wa.html_to_text_combine_to_python
+python3 -m llm_medicaid_eligibility.wa.html_to_text_to_python_combine
 ```
 
 ## Disclaimer
