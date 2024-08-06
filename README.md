@@ -1,5 +1,5 @@
 # llm-medicaid-eligibility
-Using large language models to create user-friendly applications for Medicaid eligibility determination
+A methodology for using large language models to create user-friendly applications for Medicaid redetermination and other social services
 
 ## Getting Started
 
