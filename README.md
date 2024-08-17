@@ -1,5 +1,6 @@
 # llm-medicaid-eligibility
-A methodology for using large language models to create user-friendly applications for Medicaid redetermination and other social services
+
+Source code for "A methodology for using large language models to create user-friendly applications for Medicaid redetermination and other social services" (Ratna et al., 2024)
 
 ## Getting Started
 
@@ -34,3 +35,21 @@ Please note that this disclaimer applies to the repository as a whole and all it
 
 If you do not agree with these terms, please refrain from using this repository.
  
+## Reference
+
+If you find our work useful in your research or if you use parts of this code please consider citing our [paper](https://doi.org/10.3389/ijph.2024.1607317):
+
+Ratna, S., Weeks, W. B., Ferres, J. L., Chopra, A., & Pereira, M. (2024). A methodology for using large language models to create user-friendly applications for Medicaid redetermination and other social services. _International Journal of Public Health_, _69_, 1607317. https://doi.org/10.3389/ijph.2024.1607317
+
+```
+@ARTICLE{10.3389/ijph.2024.1607317,
+    AUTHOR={Ratna, Sumanth  and Weeks, William B.  and Ferres, Juan Lavista  and Chopra, Aneesh  and Pereira, Mayana },
+    TITLE={A Methodology for Using Large Language Models to Create User-Friendly Applications for Medicaid Redetermination and Other Social Services},
+    JOURNAL={International Journal of Public Health},
+    VOLUME={69},
+    YEAR={2024},
+    URL={https://www.ssph-journal.org/journals/international-journal-of-public-health/articles/10.3389/ijph.2024.1607317},
+    DOI={10.3389/ijph.2024.1607317},
+    ISSN={1661-8564},
+}
+```
